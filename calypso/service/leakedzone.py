@@ -9,7 +9,7 @@ import re
 import os
 import io
 
-from model.scraper import Scraper
+from ..model.scraper import Scraper
 
 
 class Leakedzone(Scraper):

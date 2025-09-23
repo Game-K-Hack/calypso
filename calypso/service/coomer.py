@@ -5,7 +5,7 @@ import json
 import re
 import os
 
-from model.scraper import Scraper
+from ..model.scraper import Scraper
 
 
 class Coomer(Scraper):
