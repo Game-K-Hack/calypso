@@ -1,4 +1,4 @@
-![banner](assets/calypso-banner-rounded.jpg)
+![banner](https://raw.githubusercontent.com/Game-K-Hack/calypso/master/assets/calypso-banner-rounded.jpg)
 
 ### CALYPSO
 
@@ -16,6 +16,6 @@ If the website you want to scrape is supported by the library, **Calypso is the 
 
 | Logo | Name | Address | Function |
 | ---- | ---- | ------- | -------- |
-| ![Coomer logo](./assets/logo/coomer.png) |  Coomer |  [coomer.st](https://coomer.st/) |  `search`, `get_posts`, `download` |
-| ![Got any Nudes? logo](./assets/logo/gotanynudes.png) |  Got any Nudes? |  [gotanynudes.com](https://gotanynudes.com/) |  `search`, `get_posts`, `download` |
-| ![Leaked zone logo](./assets/logo/leakedzone.png) |  Leaked zone |  [leakedzone.com](https://leakedzone.com/) |  `search`, `get_posts`, `download` |
+| ![Coomer logo](https://raw.githubusercontent.com/Game-K-Hack/calypso/master/assets/logo/coomer.png) |  Coomer |  [coomer.st](https://coomer.st/) |  `search`, `get_posts`, `download` |
+| ![Got any Nudes? logo](https://raw.githubusercontent.com/Game-K-Hack/calypso/master/assets/logo/gotanynudes.png) |  Got any Nudes? |  [gotanynudes.com](https://gotanynudes.com/) |  `search`, `get_posts`, `download` |
+| ![Leaked zone logo](https://raw.githubusercontent.com/Game-K-Hack/calypso/master/assets/logo/leakedzone.png) |  Leaked zone |  [leakedzone.com](https://leakedzone.com/) |  `search`, `get_posts`, `download` |

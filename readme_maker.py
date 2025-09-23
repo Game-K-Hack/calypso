@@ -1,4 +1,4 @@
-BASE_README = """![banner](assets/calypso-banner-rounded.jpg)
+BASE_README = """![banner](https://raw.githubusercontent.com/Game-K-Hack/calypso/master/assets/calypso-banner-rounded.jpg)
 
 ### CALYPSO
 
@@ -92,7 +92,8 @@ with open("README.md", "w", encoding="utf8") as file:
                     and isinstance(service.__dict__[key], FunctionType)
                 ]
                 functions = ("`" + "`, `".join(functions) + "`") if len(functions) > 0 else "*none*"
-                logo_path = get_favicon(service.domain, f"./assets/logo/{service.__name__.lower()}.png")
+                get_favicon(service.domain, f"./assets/logo/{service.__name__.lower()}.png")
+                logo_path = f"https://raw.githubusercontent.com/Game-K-Hack/calypso/master/assets/logo/{service.__name__.lower()}.png"
                 domain_name = service.domain.split("://")[1].split("/")[0].split(".")
                 domain_name = domain_name[-2] + "." + domain_name[-1]
                 table.append(f"| ![{service.name} logo]({logo_path}) |  {service.name} |  [{domain_name}]({service.domain}) |  {functions} |")
