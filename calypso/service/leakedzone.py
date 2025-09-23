@@ -14,6 +14,7 @@ from ..model.scraper import Scraper
 
 class Leakedzone(Scraper):
     name = "Leaked zone"
+    domain = "https://leakedzone.com/"
 
     def __init__(self):
         self.domain = "https://leakedzone.com"

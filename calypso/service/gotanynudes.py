@@ -7,6 +7,7 @@ from ..model.scraper import Scraper
 
 class Gotanynudes(Scraper):
     name = "Got any Nudes?"
+    domain = "https://gotanynudes.com/"
 
     def __init__(self):
         self.domain = "https://gotanynudes.com"

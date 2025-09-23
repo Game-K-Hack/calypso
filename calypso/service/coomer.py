@@ -10,6 +10,7 @@ from ..model.scraper import Scraper
 
 class Coomer(Scraper):
     name = "Coomer"
+    domain = "https://coomer.st/"
 
     def __init__(self):
         self.domain = "https://coomer.st/api"
