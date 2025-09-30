@@ -1,3 +1,4 @@
+BASE_LOGO_URL = "https://raw.githubusercontent.com/Game-K-Hack/calypso/master/assets/logo/"
 BASE_README = """![banner](https://raw.githubusercontent.com/Game-K-Hack/calypso/master/assets/calypso-banner-rounded.jpg)
 
 ### CALYPSO
@@ -90,8 +91,16 @@ def get_favicon(url: str, output_file: str = "favicon.ico") -> str:
             h, w = image.size
             icons[h*w] = image
         except: continue
-    best_image = sorted(list(icons.keys()))[-1]
-    icons[best_image].save(output_file)
+    if len(list(icons.keys())) > 0:
+        best_image = sorted(list(icons.keys()))[-1]
+        icons[best_image].save(output_file)
+    else:
+        print("\033[31m ERROR   Tab icon not found, please enter the URL of the corresponding icon or leave blank for a default icon")
+        best_image = input(" \033[35mINPUT\033[0m   \033[01m>\033[0m ")
+        if best_image == "":
+            output_file = BASE_LOGO_URL + "__not_found__.png"
+        else:
+            icons[best_image].save(output_file)
     return output_file
 
 print("  \033[34mINFO\033[0m   Start")
@@ -117,7 +126,7 @@ with open("README.md", "w", encoding="utf8") as file:
                 functions = ("`" + "`, `".join(functions) + "`") if len(functions) > 0 else "*none*"
                 get_favicon(service.domain, f"./assets/logo/{service.__name__.lower()}.png")
                 print(f"    \033[32mOK\033[0m   Icon of {service.domain} saved")
-                logo_path = f"https://raw.githubusercontent.com/Game-K-Hack/calypso/master/assets/logo/{service.__name__.lower()}.png"
+                logo_path = BASE_LOGO_URL + service.__name__.lower() + ".png"
                 domain_name = service.domain.split("://")[1].split("/")[0].split(".")
                 domain_name = domain_name[-2] + "." + domain_name[-1]
                 table.append(f"| ![{service.name} logo]({logo_path}) |  {service.name} |  [{domain_name}]({service.domain}) |  {functions} |")

@@ -16,6 +16,7 @@ If the website you want to scrape is supported by the library, **Calypso is the 
 
 | Logo | Name | Address | Function |
 | ---- | ---- | ------- | -------- |
+| ![Bin.sx logo](https://raw.githubusercontent.com/Game-K-Hack/calypso/master/assets/logo/binsx.png) |  Bin.sx |  [bin.sx](https://paste.bin.sx) |  `get_text_by_id` |
 | ![Coomer logo](https://raw.githubusercontent.com/Game-K-Hack/calypso/master/assets/logo/coomer.png) |  Coomer |  [coomer.st](https://coomer.st/) |  `search`, `get_posts`, `download` |
 | ![Got any Nudes? logo](https://raw.githubusercontent.com/Game-K-Hack/calypso/master/assets/logo/gotanynudes.png) |  Got any Nudes? |  [gotanynudes.com](https://gotanynudes.com/) |  `search`, `get_posts`, `download` |
 | ![Leaked zone logo](https://raw.githubusercontent.com/Game-K-Hack/calypso/master/assets/logo/leakedzone.png) |  Leaked zone |  [leakedzone.com](https://leakedzone.com/) |  `search`, `get_posts`, `download` |
