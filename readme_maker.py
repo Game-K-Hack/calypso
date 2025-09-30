@@ -13,6 +13,24 @@ Named after Calypso, the sea nymph from Greek mythology, the ship and its crew s
 Unlike general-purpose tools such as HTTrack, which download an entire site before extracting data, Calypso is designed to be **fast and targeted**. It only retrieves the information you need, in an optimized way.  
 If the website you want to scrape is supported by the library, **Calypso is the ideal choice**.  
 
+## Installation
+
+You can install **Calypso** directly from **PyPI** with `pip`:
+
+```bash
+pip install pycalypso
+```
+
+Or from the GitHub repository to get the latest development version:
+
+```bash
+git clone https://github.com/Game-K-Hack/calypso.git
+cd calypso
+pip install -r requirements.txt
+```
+
+Make sure you are using Python 3.7 or higher.
+
 ## Supported website
 
 %TABLE%
