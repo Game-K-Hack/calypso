@@ -124,12 +124,11 @@ with open("README.md", "w", encoding="utf8") as file:
                     and isinstance(service.__dict__[key], FunctionType)
                 ]
                 functions = ("`" + "`, `".join(functions) + "`") if len(functions) > 0 else "*none*"
-                get_favicon(service.domain, f"./assets/logo/{service.__name__.lower()}.png")
+                imagepath = get_favicon(service.domain, f"./assets/logo/{service.__name__.lower()}.png")
                 print(f"    \033[32mOK\033[0m   Icon of {service.domain} saved")
-                logo_path = BASE_LOGO_URL + service.__name__.lower() + ".png"
                 domain_name = service.domain.split("://")[1].split("/")[0].split(".")
                 domain_name = domain_name[-2] + "." + domain_name[-1]
-                table.append(f"| ![{service.name} logo]({logo_path}) |  {service.name} |  [{domain_name}]({service.domain}) |  {functions} |")
+                table.append(f"| ![{service.name} logo]({imagepath}) |  {service.name} |  [{domain_name}]({service.domain}) |  {functions} |")
                 print("    \033[32mOK\033[0m   Writed in readme")
 
     content = BASE_README
