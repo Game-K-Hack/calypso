@@ -34,12 +34,37 @@ Make sure you are using Python 3.7 or higher.
 ## Supported website
 
 %TABLE%
+
+### Coming soon
+
+%TABLE_COMING_SOON%
+
 """
+COMING_SOON = {
+    "Nautiljon": "https://www.nautiljon.com/", 
+    "PictAero": "https://www.pictaero.com/", 
+    "MyAnimeList": "https://myanimelist.net/", 
+    "Jikan": "https://jikan.moe/", 
+    "IGDB": "https://www.igdb.com/", 
+    "TwitchTracker": "https://twitchtracker.com/", 
+    "TMDB": "https://www.themoviedb.org/", 
+    "TV Theme Tunes": "https://www.televisiontunes.com/", 
+    "Games Theme Songs": "https://gamethemesongs.com/", 
+    "Tv ad songs": "http://tvadsongs.com/", 
+    "YARN": "https://yarn.co/", 
+    "IMDb": "https://www.imdb.com/", 
+    "ISBN DB": "https://isbndb.com/", 
+    "MusicBrainz": "https://musicbrainz.org/", 
+    "SteamDB": "https://steamdb.info/", 
+    "JAV Database": "https://www.javdatabase.com/", 
+}
 
 
 
 import io
+import os
 import calypso
+import urllib3
 import requests
 from PIL import Image
 from bs4 import BeautifulSoup
@@ -47,9 +72,10 @@ from types import FunctionType
 from fake_useragent import UserAgent
 from urllib.parse import urljoin
 
-def find_icons(url:str):
-    resp = requests.get(url, timeout=10)
-    resp.raise_for_status()
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+def find_icons(url:str) -> list[str]:
+    resp = requests.get(url, timeout=30, verify=False)
     soup = BeautifulSoup(resp.text, "html.parser")
     icons = set()
 
@@ -76,9 +102,14 @@ def find_icons(url:str):
         except Exception:
             pass
 
-    return [i for i in list(icons) if not i.endswith(".svg")]
+    return [i for i in list(icons) if not i.endswith(".svg") and ".svg?" not in i]
 
-def get_favicon(url: str, output_file: str = "favicon.ico") -> str:
+def get_favicon(url:str, output_file:str="favicon.ico") -> str:
+    icon_url = BASE_LOGO_URL + os.path.basename(output_file)
+    if os.path.exists(output_file):
+        print(f" \033[90mDEBUG   Get local image: {output_file}\033[0m")
+        return icon_url
+
     icons:dict[int, Image] = {}
     domain = "/".join(url.split("/")[:3])
     for favicon_url in find_icons(url):
@@ -88,38 +119,39 @@ def get_favicon(url: str, output_file: str = "favicon.ico") -> str:
                 favicon_url, 
                 headers={
                     "User-Agent": UserAgent().firefox, 
-                    "Accept": "image/avif,image/webp,image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.5", 
-                    "Accept-Language": "fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3", 
-                    "Accept-Encoding": "gzip, deflate, br, zstd", 
-                    "Connection": "keep-alive", 
                     "Origin": domain, 
                     "Referer": domain + "/", 
-                    "Sec-Fetch-Dest": "image", 
-                    "Sec-Fetch-Mode": "no-cors", 
-                    "Sec-Fetch-Site": "same-origin", 
-                    "DNT": "1", 
-                    "Sec-GPC": "1", 
-                    "Priority": "u=6", 
-                    "Pragma": "no-cache", 
                     "Cache-Control": "no-cache", 
-                    "TE": "trailers", 
                 }, 
-                timeout=10)
+                timeout=10, 
+                verify=False)
+        except requests.exceptions.InvalidSchema:
+            continue
+        if 200 <= content.status_code < 400:
             image = Image.open(io.BytesIO(content.content))
             h, w = image.size
             icons[h*w] = image
-        except: continue
+        else:
+            continue
     if len(list(icons.keys())) > 0:
-        best_image = sorted(list(icons.keys()))[-1]
+        best_image = sorted(icons.keys())[-1]
         icons[best_image].save(output_file)
     else:
         print("\033[31m ERROR   Tab icon not found, please enter the URL of the corresponding icon or leave blank for a default icon")
-        best_image = input(" \033[35mINPUT\033[0m   \033[01m>\033[0m ")
-        if best_image == "":
-            output_file = BASE_LOGO_URL + "__not_found__.png"
+        filepath = input(" \033[35mINPUT\033[0m   \033[01m>\033[0m ")
+        if filepath == "":
+            icon_url = BASE_LOGO_URL + "__not_found__.png"
         else:
-            icons[best_image].save(output_file)
-    return output_file
+            Image.open(filepath).save(output_file)
+    return icon_url
+
+def resize(url:str) -> str:
+    filepath = "./assets/logo/" + url.split("/")[-1]
+    image = Image.open(filepath)
+    image = image.resize((40, 40))
+    resizefilepath = ".".join(url.split("/")[-1].split(".")[:-1]) + "-resized.png"
+    image.save("./assets/logo/" + resizefilepath)
+    return BASE_LOGO_URL + resizefilepath
 
 print("  \033[34mINFO\033[0m   Start")
 with open("README.md", "w", encoding="utf8") as file:
@@ -143,14 +175,32 @@ with open("README.md", "w", encoding="utf8") as file:
                 ]
                 functions = ("`" + "`, `".join(functions) + "`") if len(functions) > 0 else "*none*"
                 imagepath = get_favicon(service.domain, f"./assets/logo/{service.__name__.lower()}.png")
+                imagepath = resize(imagepath)
                 print(f"    \033[32mOK\033[0m   Icon of {service.domain} saved")
                 domain_name = service.domain.split("://")[1].split("/")[0].split(".")
                 domain_name = domain_name[-2] + "." + domain_name[-1]
                 table.append(f"| ![{service.name} logo]({imagepath}) |  {service.name} |  [{domain_name}]({service.domain}) |  {functions} |")
                 print("    \033[32mOK\033[0m   Writed in readme")
 
+    table_coming_soon = [
+        "| Logo | Name | Address |", 
+        "| ---- | ---- | ------- |"
+    ]
+
+    for key in sorted(COMING_SOON.keys()):
+        url = COMING_SOON[key]
+        domain_name = url.split("://")[1].split("/")[0].split(".")
+        domain_name = domain_name[-2] + "." + domain_name[-1]
+        print(f"  \033[33mWAIT\033[0m   Search icon of {domain_name}...")
+        imagepath = get_favicon(url, f"./assets/logo/{domain_name.lower().replace(' ', '')}.png")
+        imagepath = resize(imagepath)
+        print(f"    \033[32mOK\033[0m   Icon of {domain_name} saved")
+        table_coming_soon.append(f"| ![{key} logo]({imagepath}) |  {key} |  [{domain_name}]({url}) |")
+        print("    \033[32mOK\033[0m   Writed in readme")
+
     content = BASE_README
     content = content.replace("%TABLE%", "\n".join(table))
+    content = content.replace("%TABLE_COMING_SOON%", "\n".join(table_coming_soon))
     file.write(content)
 
 print("  \033[34mINFO\033[0m   Ended")
