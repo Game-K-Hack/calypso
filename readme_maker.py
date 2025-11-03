@@ -128,9 +128,12 @@ def get_favicon(url:str, output_file:str="favicon.ico") -> str:
         except requests.exceptions.InvalidSchema:
             continue
         if 200 <= content.status_code < 400:
-            image = Image.open(io.BytesIO(content.content))
-            h, w = image.size
-            icons[h*w] = image
+            try:
+                image = Image.open(io.BytesIO(content.content))
+                h, w = image.size
+                icons[h*w] = image
+            except:
+                continue
         else:
             continue
     if len(list(icons.keys())) > 0:
