@@ -2,8 +2,9 @@ from .binsx import BinSX
 from .coomer import Coomer
 from .ephemeride import Ephemeride
 from .gotanynudes import Gotanynudes
+from .largus import Largus
 from .leakedzone import Leakedzone
-from.mediafire import MediaFire
+from .mediafire import MediaFire
 from .openfoodfacts_v3 import OpenFoodFactsV3
 from .voiranime import VoirAnime
 from .voirdrama import VoirDrama
