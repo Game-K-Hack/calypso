@@ -39,7 +39,7 @@ class Largus():
         ]
 
         self.pw = sync_playwright().start()
-        self.pwbrowser = self.pw.firefox.launch(headless=True)
+        self.pwbrowser = self.pw.firefox.launch(headless=False)
 
     def __new_browser_page__(self):
         self.pwpage = self.pwbrowser.new_page()
@@ -88,6 +88,7 @@ class Largus():
 
         self.__new_browser_page__()
         self.pwpage.goto(url)
+        self.pwpage.pause()
         content:str = self.pwpage.content()
         title = content.split("class=\"modele\">")[1].split("<")[0].strip()
         price = content.split("class=\"prix\">")[1].split("<")[0].strip()
@@ -106,6 +107,13 @@ class Largus():
             .split("</li></ul>")[0]
         description = "\n".join(description.split("\n")[:-1]).strip()
 
+        imgs = []
+        for img in content.split("<img")[1:]:
+            img = img.split(">")[0]
+            if "class=\"embed-responsive-item\"" in img:
+                img = img.split("src=\"")[1].split("\"")[0]
+                imgs.append(img.split("?")[0])
+
         self.__close_browser_page__()
 
         return {
@@ -114,5 +122,6 @@ class Largus():
             "km": km, 
             "energy": energy, 
             "color": color, 
-            "description": description
+            "description": description, 
+            "images": imgs
         }
